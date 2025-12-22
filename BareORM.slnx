@@ -1,0 +1,30 @@
+<Solution>
+  <Folder Name="/benchmarks/" />
+
+  <Folder Name="/providers/">
+    <Project Path="providers/BareORM.SqlServer.Migrations/BareORM.SqlServer.Migrations.csproj" />
+    <Project Path="providers/BareORM.SqlServer/BareORM.SqlServer.csproj" />
+  </Folder>
+
+  <Folder Name="/samples/">
+    <Project Path="samples/BareORM.samples.csproj" />
+  </Folder>
+
+  <Folder Name="/src/">
+    <Project Path="src/BareORM.Abstractions/BareORM.Abstractions.csproj" />
+    <Project Path="src/BareORM.Advanced/BareORM.Advanced.csproj" />
+    <Project Path="src/BareORM.Annotations/BareORM.Annotations.csproj" />
+    <Project Path="src/BareORM.Bulk/BareORM.Bulk.csproj" />
+    <Project Path="src/BareORM.Core/BareORM.Core.csproj" />
+    <Project Path="src/BareORM.Mapping/BareORM.Mapping.csproj" />
+    <Project Path="src/BareORM.Migrations.Abstractions/BareORM.Migrations.Abstractions.csproj" />
+    <Project Path="src/BareORM.Migrations/BareORM.Migrations.csproj" />
+    <Project Path="src/BareORM.Schema/BareORM.Schema.csproj" />
+    <Project Path="src/BareORM.Serialization/BareORM.Serialization.csproj" />
+  </Folder>
+
+  <Folder Name="/test/">
+    <Project Path="test/BareORM.test.csproj" />
+  </Folder>
+  <Project Path="BareORM/BareORM.csproj" />
+</Solution>

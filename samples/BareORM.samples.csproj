@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BareORM\BareORM.csproj" />
+    <ProjectReference Include="..\providers\BareORM.SqlServer.Migrations\BareORM.SqlServer.Migrations.csproj" />
+    <ProjectReference Include="..\providers\BareORM.SqlServer\BareORM.SqlServer.csproj" />
+    <ProjectReference Include="..\src\BareORM.Annotations\BareORM.Annotations.csproj" />
+    <ProjectReference Include="..\src\BareORM.Schema\BareORM.Schema.csproj" />
+  </ItemGroup>
+
+</Project>

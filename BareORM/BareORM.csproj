@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\providers\BareORM.SqlServer\BareORM.SqlServer.csproj" />
+    <ProjectReference Include="..\src\BareORM.Abstractions\BareORM.Abstractions.csproj" />
+    <ProjectReference Include="..\src\BareORM.Advanced\BareORM.Advanced.csproj" />
+    <ProjectReference Include="..\src\BareORM.Bulk\BareORM.Bulk.csproj" />
+    <ProjectReference Include="..\src\BareORM.Core\BareORM.Core.csproj" />
+    <ProjectReference Include="..\src\BareORM.Mapping\BareORM.Mapping.csproj" />
+    <ProjectReference Include="..\src\BareORM.Serialization\BareORM.Serialization.csproj" />
+  </ItemGroup>
+
+</Project>

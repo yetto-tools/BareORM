@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<Description>Fast POCO mapping for BareORM</Description>
+	<LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BareORM.Abstractions\BareORM.Abstractions.csproj" />
+    <ProjectReference Include="..\BareORM.Annotations\BareORM.Annotations.csproj" />
+    <ProjectReference Include="..\BareORM.Core\BareORM.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Attributes\" />
+  </ItemGroup>
+
+</Project>

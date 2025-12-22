@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="History\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BareORM.Abstractions\BareORM.Abstractions.csproj" />
+    <ProjectReference Include="..\BareORM.Schema\BareORM.Schema.csproj" />
+  </ItemGroup>
+
+
+</Project>
