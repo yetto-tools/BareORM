@@ -17,7 +17,7 @@ using BareORM.SqlServer;
 
 Schema.SampleOnMemory();
 
-Migration.Run();
+MigrationExample.Run();
 
 
 //// -----------------------------

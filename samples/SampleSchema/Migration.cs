@@ -9,7 +9,7 @@ using BareORM.SqlServer.Schema;
 
 namespace BareORM.samples
 {
-    public static class Migration
+    public static class MigrationExample
     {
         public static void Run()
         {

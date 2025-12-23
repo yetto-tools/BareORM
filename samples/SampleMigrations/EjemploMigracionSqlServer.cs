@@ -1,4 +1,5 @@
 ﻿using BareORM.Migrations.Migrations;
+using BareORM.samples.TestAlfaMigrations;
 using BareORM.SqlServer;
 using BareORM.SqlServer.Migrations;
 
