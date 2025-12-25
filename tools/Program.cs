@@ -79,7 +79,7 @@ namespace BareORM.Tools.Cli
             var root = GetOpt(args, "--root") ?? Directory.GetCurrentDirectory();
 
             var layout = ProjectLayout.Ensure(root);
-            Console.WriteLine("✅ BareORM init listo:");
+            Console.WriteLine("BareORM init listo:");
             Console.WriteLine($"   Root:      {layout.ProjectRoot}");
             Console.WriteLine($"   DbAssets:  {layout.AssetsRoot}");
             Console.WriteLine($"   Migrations:{layout.MigrationsRoot}");
@@ -148,9 +148,9 @@ namespace BareORM.Tools.Cli
 
             ManifestWriter.Append(layout.ManifestPath, migrationId: id, migrationName: name, opsCount: ops.Count, filePath: filePath);
 
-            Console.WriteLine($"✅ Migración generada: {filePath}");
-            Console.WriteLine($"✅ Snapshot actualizado: {layout.SnapshotPath}");
-            Console.WriteLine($"✅ Manifest actualizado: {layout.ManifestPath}");
+            Console.WriteLine($"Migración generada: {filePath}");
+            Console.WriteLine($"Snapshot actualizado: {layout.SnapshotPath}");
+            Console.WriteLine($"Manifest actualizado: {layout.ManifestPath}");
             Console.WriteLine($"Ops: {ops.Count}");
             Console.WriteLine("⚠️  Ahora: build del proyecto para que Update Database encuentre la migración.");
             return 0;
@@ -236,7 +236,7 @@ namespace BareORM.Tools.Cli
             migrator.Migrate(migrations);
         #endregion 
 
-            Console.WriteLine("✅ Update Database listo.");
+            Console.WriteLine("Update Database listo.");
             return 0;
         }
 
