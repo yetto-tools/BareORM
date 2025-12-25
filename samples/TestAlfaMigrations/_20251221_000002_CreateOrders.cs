@@ -2,13 +2,10 @@
 using BareORM.Migrations.Abstractions;
 using BareORM.Schema;
 using global::BareORM.Annotations;
-using global::BareORM.Migrations.Abstractions;
 using global::BareORM.Schema.Types;
 
 namespace BareORM.samples.TestAlfaMigrations
 {
-    
-
     
 
     public sealed class _20251221_000002_CreateOrders : Migration
