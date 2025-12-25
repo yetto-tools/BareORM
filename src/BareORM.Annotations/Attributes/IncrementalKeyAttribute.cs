@@ -81,10 +81,34 @@
         /// predeterminado (generalmente 1).
         /// </value>
         public long? IncrementBy { get; init; }
-        
-        
+
+
+        /// <summary>
+        /// Valor inicial (seed) para generación incremental/autonumérica.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Se usa cuando la columna se configura como incremental (IDENTITY/SEQUENCE/etc).
+        /// Si es null, el provider aplicará su valor por defecto.
+        /// </para>
+        /// <para>
+        /// Ejemplos típicos:
+        /// SQL Server IDENTITY(seed, increment)
+        /// PostgreSQL SEQUENCE START WITH / INCREMENT BY
+        /// </para>
+        /// </remarks>
         public long? Seed { get; internal set; }
-        
+
+        /// <summary>
+        /// Incremento para generación incremental/autonumérica.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Determina cuánto aumenta el valor por cada nueva fila.
+        /// Si es null, el provider aplicará su valor por defecto (comúnmente 1).
+        /// </para>
+        /// </remarks>
         public long? Increment { get; internal set; }
+
     }
 }
