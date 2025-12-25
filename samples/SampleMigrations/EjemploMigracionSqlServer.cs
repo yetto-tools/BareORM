@@ -14,8 +14,7 @@ public static class EjemploMigracionSqlServer
         var connFactory = new SqlServerConnectionFactory(connectionString);
 
 
-
-        SqlServerDatabaseBootstrap.EnsureDatabaseExists(connectionString);
+        SqlServerDatabaseBootstrap.TryEnsureDatabaseExists(connectionString);
 
         using var session = new SqlServerMigrationSession(connectionString);
 
@@ -40,7 +39,7 @@ public static class EjemploMigracionSqlServer
 
         migrator.Migrate(migrations);
 
-        Console.WriteLine("✅ Migraciones aplicadas.");
+        Console.WriteLine("Migraciones aplicadas.");
         Console.ReadLine();
 
 

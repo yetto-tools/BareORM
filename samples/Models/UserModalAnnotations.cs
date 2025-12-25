@@ -6,24 +6,28 @@ namespace BareORM.samples.Models
 {
 
 
-    [Table("Users", "dbo")]
+    [Table("User", "dbo")]
     [Check("IsActive IN (0,1)", Name = "CK_Users_IsActive")]
     public sealed class UserModelAnnotations
     {
         [PrimaryKey]
         [IncrementalKey]
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         [Unique("UQ_Users_Email")]
         public string Email { get; set; } = "";
 
         public string DisplayName { get; set; } = "";
 
+        public Guid UserGuid { get; set; }
+
         public bool IsActive { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
-        [Column("settings")]
+        public DateTime UpdatedAt { get; set; } 
+
+        [ColumnName("settings")]
         [Json]
         public UserSettingsModelAnnotations Settings { get; set; } = new();
     }

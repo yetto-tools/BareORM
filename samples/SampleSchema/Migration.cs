@@ -15,7 +15,25 @@ namespace BareORM.samples
         {
             var connectionString =
               "Data Source=(localdb)\\ProjectModels;Initial Catalog=DB_TestMigration;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False;Command Timeout=30";
-            SqlServerDatabaseBootstrap.EnsureDatabaseExists(connectionString);
+            
+            var result =  SqlServerDatabaseBootstrap.TryEnsureDatabaseExists(connectionString);
+
+            if (result.Status is DatabaseEnsureStatus.SkippedNoMasterAccess or DatabaseEnsureStatus.SkippedNoCreatePermission)
+            {
+                Console.WriteLine($"No pude crear/verificar la DB '{result.Database}'. Status={result.Status}");
+                Console.WriteLine(result.Error?.Message);
+
+                // Aquí decides: abortar o continuar (pero abrir destino probablemente fallará)
+                // En PROD normalmente abortás con mensaje claro.
+                return;
+            }
+
+            if (result.Status == DatabaseEnsureStatus.Failed)
+            {
+                Console.WriteLine($"Bootstrap falló: {result.Error?.Message}");
+                throw result.Error!;
+            }
+
 
             var connFactory = new SqlServerConnectionFactory(connectionString);
 
@@ -52,7 +70,7 @@ namespace BareORM.samples
                 }
 
                 db.Commit();
-                Console.WriteLine("✅ Schema aplicado correctamente.");
+                Console.WriteLine("Schema aplicado correctamente.");
             }
             catch (Exception ex)
             {

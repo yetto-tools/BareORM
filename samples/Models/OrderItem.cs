@@ -1,5 +1,7 @@
-﻿using BareORM.Annotations;
+﻿using System.Runtime.InteropServices;
+using BareORM.Annotations;
 using BareORM.Annotations.Attributes;
+using BareORM.Annotations.Validation;
 
 namespace BareORM.samples.Models
 {
@@ -13,8 +15,14 @@ namespace BareORM.samples.Models
             OnDelete = ReferentialAction.Cascade)]
         public long OrderId { get; set; }
 
+        
+        public string ProductId { get; set; }
+
         public string SKU { get; set; } = "";
         public int Qty { get; set; }
+
+        [Precision(18, 4)]
+        
         public decimal UnitPrice { get; set; }
 
         public decimal LineTotal { get; set; }

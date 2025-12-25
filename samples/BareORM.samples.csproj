@@ -7,12 +7,37 @@
     <OutputType>Exe</OutputType>
   </PropertyGroup>
 
+
+
   <ItemGroup>
     <ProjectReference Include="..\BareORM\BareORM.csproj" />
     <ProjectReference Include="..\providers\BareORM.SqlServer.Migrations\BareORM.SqlServer.Migrations.csproj" />
     <ProjectReference Include="..\providers\BareORM.SqlServer\BareORM.SqlServer.csproj" />
     <ProjectReference Include="..\src\BareORM.Annotations\BareORM.Annotations.csproj" />
     <ProjectReference Include="..\src\BareORM.Schema\BareORM.Schema.csproj" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <None Update="DbAssets\FunctionsScalar\dbo.fn_ActivoTexto.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="DbAssets\Procedures\dbo.sp_ListarUsuarios.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="DbAssets\Triggers\dbo.trg_Users_Audit.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="DbAssets\Views\dbo.vw_UsuariosActivos.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

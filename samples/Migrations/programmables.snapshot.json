@@ -1,0 +1,28 @@
+{
+  "Items": [
+    {
+      "Schema": "dbo",
+      "Name": "fn_ActivoTexto",
+      "Kind": 2,
+      "Hash": "D345A8C8FE528FED89E3CBC9456CCA393ED8F7C409C4253A25E00A20669DA9D3"
+    },
+    {
+      "Schema": "dbo",
+      "Name": "sp_ListarUsuarios",
+      "Kind": 1,
+      "Hash": "1F66742F8D54FC40D5225B6C798D4466C0F4B173CB5BABDF5937CA434CC4F616"
+    },
+    {
+      "Schema": "dbo",
+      "Name": "trg_Users_Audit",
+      "Kind": 4,
+      "Hash": "3CE82B431D688CD5F6277F86D532CF72AE2B6E9ED84D6BBF30D9C8932E5D2223"
+    },
+    {
+      "Schema": "dbo",
+      "Name": "vw_UsuariosActivos",
+      "Kind": 0,
+      "Hash": "7429106564EE36A8B6D6D891C7B847DE84A30A953B2A5F6275C71C76771C89A5"
+    }
+  ]
+}

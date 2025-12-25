@@ -7,8 +7,9 @@ using BareORM.Advanced.MultiResult;
 using BareORM.Advanced.Split;
 using BareORM.Core;
 using BareORM.Mapping;
-using BareORM.samples.Models;
 using BareORM.samples;
+using BareORM.samples.AddMigration;
+using BareORM.samples.Models;
 using BareORM.Serialization;
 using BareORM.SqlServer;
 
@@ -18,6 +19,11 @@ using BareORM.SqlServer;
 Schema.SampleOnMemory();
 
 MigrationExample.Run();
+
+AddMigrationProgrammables.Run();
+
+UpdateDatabase.Run();
+
 
 
 //// -----------------------------
