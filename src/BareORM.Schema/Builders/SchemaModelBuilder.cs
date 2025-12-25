@@ -1,29 +1,77 @@
-﻿
-using System.Reflection;
+﻿using System.Reflection;
 using BareORM.Annotations.Attributes;
 using BareORM.Schema.Utilities;
 
 namespace BareORM.Schema.Builders
 {
     /// <summary>
-    /// SchemaModelBuilder construye un modelo de esquema a partir de tipos de entidad anotados.
+    /// Construye un <see cref="SchemaModel"/> a partir de tipos CLR (entidades) usando atributos de <c>BareORM.Annotations</c>.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Este builder convierte “metadata” (atributos en clases/propiedades) en un modelo de esquema agnóstico:
+    /// <see cref="SchemaModel"/> → <see cref="DbSchema"/> → <see cref="DbTable"/> → <see cref="DbColumn"/> y constraints.
+    /// </para>
+    /// <para>
+    /// El modelo resultante se usa para:
+    /// </para>
+    /// <list type="bullet">
+    /// <item><description>Generación de migraciones / diff de esquema.</description></item>
+    /// <item><description>DDL por provider (SQL Server, PostgreSQL, etc.).</description></item>
+    /// <item><description>Validar convenciones/atributos antes de ejecutar.</description></item>
+    /// </list>
+    /// <para>
+    /// Reglas principales implementadas:
+    /// </para>
+    /// <list type="bullet">
+    /// <item><description>Incluye tipos con <c>[Table]</c> solo si <see cref="SchemaModelBuilderOptions.RequireTableAttribute"/> es true.</description></item>
+    /// <item><description>Schema: <c>[Table.Schema]</c> o <see cref="SchemaModelBuilderOptions.DefaultSchema"/>.</description></item>
+    /// <item><description>Tabla: <c>[Table.Name]</c> o nombre del tipo CLR.</description></item>
+    /// <item><description>Nullability: NULL por defecto; <c>[ColumnNotNull]</c>, <c>[PrimaryKey]</c> e <c>[IncrementalKey]</c> fuerzan NOT NULL.</description></item>
+    /// <item><description>Strings: <c>[ColumnMaxLength]</c> o <c>[ColumnFixedLength]/[ColumnLength]</c> (mutuamente excluyentes).</description></item>
+    /// <item><description>Decimal: <c>[ColumnPrecision]</c> aplica solo a <see cref="decimal"/> / <see cref="decimal"/>?.</description></item>
+    /// <item><description>PK: se arma con propiedades marcadas con <c>[PrimaryKey]</c> y se ordena por <c>Order</c>.</description></item>
+    /// <item><description>Unique: se agrupa por <c>[Unique.Name]</c> y ordena por <c>Unique.Order</c>.</description></item>
+    /// <item><description>Checks: soporta class-level y property-level <c>[Check]</c>.</description></item>
+    /// <item><description>FK: soporta <c>[ForeignKey]</c> por propiedad (FK simple de 1 columna).</description></item>
+    /// </list>
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// var builder = new SchemaModelBuilder(new SchemaModelBuilderOptions
+    /// {
+    ///     DefaultSchema = "dbo",
+    ///     RequireTableAttribute = false
+    /// });
+    ///
+    /// var model = builder.Build(typeof(User), typeof(Order), typeof(OrderItem));
+    /// foreach (var t in model.AllTables())
+    ///     Console.WriteLine($"{t.Schema}.{t.Name} cols={t.Columns.Count} pk={(t.PrimaryKey?.Name ?? "none")}");
+    /// </code>
+    /// </example>
     public sealed class SchemaModelBuilder
     {
         private readonly SchemaModelBuilderOptions _opt;
 
         /// <summary>
-        /// 
+        /// Inicializa el builder con opciones (o defaults si no se proporcionan).
         /// </summary>
-        /// <param name="options"></param>
+        /// <param name="options">Opciones de construcción del modelo.</param>
         public SchemaModelBuilder(SchemaModelBuilderOptions? options = null)
             => _opt = options ?? new SchemaModelBuilderOptions();
 
         /// <summary>
-        /// Construye el modelo de esquema a partir de los tipos de entidad proporcionados.
+        /// Construye un <see cref="SchemaModel"/> a partir de uno o más tipos de entidad.
         /// </summary>
-        /// <param name="entityTypes"></param>
-        /// <returns></returns>
+        /// <param name="entityTypes">Tipos CLR que representan entidades.</param>
+        /// <returns>Modelo de esquema construido.</returns>
+        /// <remarks>
+        /// Si <see cref="SchemaModelBuilderOptions.RequireTableAttribute"/> es true, se omiten tipos sin <c>[Table]</c>.
+        /// </remarks>
+        /// <exception cref="InvalidOperationException">
+        /// Se lanza si se detecta uso inválido de atributos (p.ej. precision en no-decimal, length en no-string,
+        /// mezcla de max length y fixed length, o FK a propiedad inexistente).
+        /// </exception>
         public SchemaModel Build(params Type[] entityTypes)
         {
             var model = new SchemaModel();
@@ -48,6 +96,19 @@ namespace BareORM.Schema.Builders
             return model;
         }
 
+        /// <summary>
+        /// Construye y registra columnas del <see cref="DbTable"/> a partir de propiedades mapeables del tipo.
+        /// </summary>
+        /// <param name="table">Tabla destino dentro del modelo.</param>
+        /// <param name="entityType">Tipo CLR de la entidad.</param>
+        /// <remarks>
+        /// <para>
+        /// Usa <see cref="ReflectionHelpers.GetMappableProperties(Type)"/> para determinar qué propiedades se incluyen.
+        /// </para>
+        /// <para>
+        /// Aplica reglas de nulabilidad, incremental key, y anotaciones de tamaño/precisión.
+        /// </para>
+        /// </remarks>
         private void BuildColumns(DbTable table, Type entityType)
         {
             foreach (var p in ReflectionHelpers.GetMappableProperties(entityType))
@@ -65,7 +126,7 @@ namespace BareORM.Schema.Builders
                     p.GetCustomAttribute<ColumnFixedLengthAttribute>()?.Value
                     ?? p.GetCustomAttribute<ColumnLengthAttribute>()?.Value;
 
-                var prec = p.GetCustomAttribute<ColumnPrecisionAttribute>(); // ✅ schema
+                var prec = p.GetCustomAttribute<ColumnPrecisionAttribute>(); // schema
 
                 // Validaciones de uso correcto
                 var isString = clrType == typeof(string);
@@ -122,7 +183,15 @@ namespace BareORM.Schema.Builders
             }
         }
 
-
+        /// <summary>
+        /// Construye constraints (PK, Unique, Checks, FK) para una tabla desde los atributos del tipo.
+        /// </summary>
+        /// <param name="table">Tabla a la cual se agregan constraints.</param>
+        /// <param name="entityType">Tipo CLR de la entidad.</param>
+        /// <param name="model">Modelo completo (disponible para reglas avanzadas o lookups).</param>
+        /// <remarks>
+        /// Actualmente las FKs soportadas son de una columna (atributo <see cref="ForeignKeyAttribute"/> por propiedad).
+        /// </remarks>
         private void BuildConstraints(DbTable table, Type entityType, SchemaModel model)
         {
             // PK
@@ -206,6 +275,11 @@ namespace BareORM.Schema.Builders
             }
         }
 
+        /// <summary>
+        /// Resuelve el nombre de columna para una propiedad, respetando <see cref="ColumnNameAttribute"/> si existe.
+        /// </summary>
+        /// <param name="p">Propiedad CLR.</param>
+        /// <returns>Nombre final de columna.</returns>
         private static string GetColumnName(PropertyInfo p)
             => p.GetCustomAttribute<ColumnNameAttribute>()?.Name ?? p.Name;
     }
