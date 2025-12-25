@@ -70,7 +70,7 @@ namespace BareORM.Mapping
 
             foreach (var prop in props)
             {
-                var colName = prop.GetCustomAttribute<ColumnAttribute>()?.Name ?? prop.Name;
+                var colName = prop.GetCustomAttribute<ColumnNameAttribute>()?.Name ?? prop.Name;
                 var key = normalize(colName);
 
                 if (!colIndex.TryGetValue(key, out var ordinal))
