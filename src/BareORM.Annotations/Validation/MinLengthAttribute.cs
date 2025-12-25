@@ -5,7 +5,6 @@ using System.Text;
 namespace BareORM.Annotations.Validation
 {
     /// <summary>
-    /// <summary>
     /// Object-level validation: minimum string length.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false, Inherited = true)]

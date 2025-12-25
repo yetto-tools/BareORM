@@ -95,7 +95,7 @@
     ///     </item>
     ///     <item>
     ///         <term>Rango</term>
-    ///         <description>Edad >= 18 AND Edad <= 120</description>
+    ///         <description>Edad  &gt;= 18 AND Edad  &lt;= 120</description>
     ///         <description>Edad BETWEEN 18 AND 120</description>
     ///     </item>
     ///     <item>
@@ -111,7 +111,7 @@
     /// </list>
     /// </remarks>
     /// <param name="expression">
-    /// La expresión SQL que debe cumplirse. Por ejemplo: "Precio > 0", "Edad >= 18 AND Edad <= 120".
+    /// La expresión SQL que debe cumplirse. Por ejemplo: "Precio &gt; 0", "Edad &gt;>= 18 AND Edad &lt;= 120".
     /// Esta expresión se ejecuta en la base de datos cuando se intenta insertar o actualizar un registro.
     /// Si el resultado es false, la BD rechaza la operación.
     /// No incluya "CHECK (" ni la palabra clave CHECK; solo la condición.
