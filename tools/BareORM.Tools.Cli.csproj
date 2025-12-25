@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<OutputType>Exe</OutputType>
+
+		<PackAsTool>true</PackAsTool>
+		<ToolCommandName>bare-tools</ToolCommandName>
+
+		<PackageId>BareORM.Tools</PackageId>
+		<Version>0.1.0</Version>
+		<Authors>BareORM (yetto-tools)</Authors>
+		<Description>BareORM CLI tooling</Description>
+	
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+
+		
+		
+		<GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\providers\BareORM.SqlServer.Migrations\BareORM.SqlServer.Migrations.csproj" />
+		<ProjectReference Include="..\src\BareORM.Migrations.Abstractions\BareORM.Migrations.Abstractions.csproj" />
+		<ProjectReference Include="..\src\BareORM.Migrations\BareORM.Migrations.csproj" />
+	</ItemGroup>
+</Project>
+
+<!--<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+	<OutputType>Exe</OutputType>
+    
+	<ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    --><!-- dotnet tool --><!--
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>bare-tools</ToolCommandName>
+    <PackageId>BareORM.Tools</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>BareORM</Authors>
+    <Description>BareORM CLI tooling</Description>
+
+	<GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+
+	<StartupObject>BareORM.Tools.Cli.Program</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\providers\BareORM.SqlServer.Migrations\BareORM.SqlServer.Migrations.csproj" />
+    <ProjectReference Include="..\src\BareORM.Migrations.Abstractions\BareORM.Migrations.Abstractions.csproj" />
+    <ProjectReference Include="..\src\BareORM.Migrations\BareORM.Migrations.csproj" />
+  </ItemGroup>
+
+
+dir tools\nupkgs
+</Project>-->
