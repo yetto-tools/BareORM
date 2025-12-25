@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using BareORM.Annotations.Attributes;
+﻿using BareORM.Annotations.Attributes;
+using BareORM.Annotations.Validation;
 
 
 namespace BareORM.samples.Models
@@ -11,8 +9,12 @@ namespace BareORM.samples.Models
         [PrimaryKey]
         [IncrementalKey]
         public long UserId    { get; set;}
-        public string Email { get; set;}
-        public string DisplayName   { get; set;}
+        
+        [Required, ColumnNotNull]
+        public string Email { get; set;} = string.Empty;
+
+        [Required, ColumnNotNull]
+        public string DisplayName   { get; set;} = string.Empty;
         public bool IsActive  { get; set;}
         public DateTime CreatedAt { get; set; }
 
