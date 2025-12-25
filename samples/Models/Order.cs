@@ -15,7 +15,7 @@ namespace BareORM.samples.Models
         public long OrderId { get; set; }
         public string OrderNumber { get; set; } = "";
 
-        [Column("TotalAmount")]
+        [ColumnName("TotalAmount")]
         public decimal Total { get; set; }
 
         public DateTime CreatedAt { get; set; }
