@@ -67,19 +67,8 @@ namespace BareORM.SqlServer.Migrations
     /// incluyendo el estado final, el nombre de la base de datos y cualquier error que haya ocurrido durante el proceso.
     /// </remarks>
     public sealed record DatabaseEnsureResult(
-        /// <summary>
-        /// Obtiene el estado del intento de verificación de la base de datos.
-        /// </summary>
         DatabaseEnsureStatus Status,
-
-        /// <summary>
-        /// Obtiene el nombre de la base de datos que se intentó verificar o crear.
-        /// </summary>
         string Database,
-
-        /// <summary>
-        /// Obtiene la excepción que ocurrió durante la operación, si aplica.
-        /// </summary>
         Exception? Error = null
     );
 

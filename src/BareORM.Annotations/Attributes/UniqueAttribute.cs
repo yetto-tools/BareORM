@@ -3,25 +3,24 @@
 namespace BareORM.Annotations.Attributes
 {
     /// <summary>
-    /// Define una restricción UNIQUE a nivel de tabla, permitiendo índices/constraints únicos compuestos
+    /// Define una restricción UNIQUE a nivel de tabla, permitiendo constraints únicos compuestos
     /// agrupando múltiples propiedades por nombre.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Este atributo se aplica a propiedades y puede repetirse en la misma propiedad (<see cref="AttributeUsageAttribute.AllowMultiple"/> = true).
-    /// El <see cref="Schema.Builders.SchemaModelBuilder"/> agrupa las columnas por <see cref="Name"/> para construir
-    /// un <c>DbUnique</c> por cada grupo.
+    /// Este atributo se aplica a propiedades y puede repetirse en la misma propiedad
+    /// (<c name="AttributeUsageAttribute.AllowMultiple"/> = true).
+    /// El builder (<c name="BareORM.Schema.Builders.SchemaModelBuilder"/>) agrupa las columnas por
+    /// <see cref="Name"/> para construir una restricción UNIQUE por cada grupo.
     /// </para>
-    /// <para>
-    /// Soporta UNIQUE compuesto:
-    /// </para>
+    /// <para>Soporta UNIQUE compuesto:</para>
     /// <list type="bullet">
     /// <item><description>Varias propiedades con el mismo <see cref="Name"/> forman una sola restricción UNIQUE.</description></item>
     /// <item><description><see cref="Order"/> define el orden de las columnas dentro del UNIQUE (útil para índices compuestos).</description></item>
     /// </list>
     /// <para>
-    /// Convención sugerida: usar nombres tipo <c>UQ_{Table}_{Col1}_{Col2}</c> o similares para evitar colisiones
-    /// y hacerlos legibles en SQL Server.
+    /// Convención sugerida: usar nombres tipo <c>UQ_{Table}_{Col1}_{Col2}</c> (o similares) para evitar colisiones
+    /// y que sea legible en SQL Server.
     /// </para>
     /// </remarks>
     /// <example>
@@ -47,6 +46,7 @@ namespace BareORM.Annotations.Attributes
     /// }
     /// </code>
     /// </example>
+
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
     public sealed class UniqueAttribute : Attribute
     {

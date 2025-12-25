@@ -15,8 +15,9 @@ namespace BareORM.samples.Models
             OnDelete = ReferentialAction.Cascade)]
         public long OrderId { get; set; }
 
-        
-        public string ProductId { get; set; }
+
+        [ColumnNotNull]
+        public string ProductId { get; set; } = "";
 
         public string SKU { get; set; } = "";
         public int Qty { get; set; }

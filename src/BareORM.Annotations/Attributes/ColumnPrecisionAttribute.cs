@@ -7,17 +7,18 @@ namespace BareORM.Annotations.Attributes
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Este atributo expresa la intención de mapear un <c>decimal</c> a un tipo con precisión/escala explícitas,
+    /// Este atributo expresa la intención de mapear un <see cref="decimal"/> a un tipo con precisión/escala explícitas,
     /// por ejemplo <c>DECIMAL(18,2)</c>.
     /// </para>
-    /// <para>
-    /// Reglas:
-    /// </para>
+    /// <para>Reglas:</para>
     /// <list type="bullet">
-    /// <item><description><paramref name="precision"/> debe ser &gt; 0.</description></item>
-    /// <item><description><paramref name="scale"/> debe ser &gt;= 0 y no puede ser mayor que <paramref name="precision"/>.</description></item>
-    /// <item><description>Recomendado usarlo únicamente sobre propiedades <see cref="decimal"/> / <see cref="decimal"/>?</description></item>
+    /// <item><description><c>precision</c> debe ser &gt; 0.</description></item>
+    /// <item><description><c>scale</c> debe ser &gt;= 0 y no puede ser mayor que <c>precision</c>.</description></item>
+    /// <item><description>Recomendado usarlo únicamente sobre propiedades <see cref="decimal"/> / <see cref="decimal"/>?.</description></item>
     /// </list>
+    /// <para>
+    /// Nota: el tipo físico exacto depende del provider (SQL Server: <c>decimal(p,s)</c>, PostgreSQL: <c>numeric(p,s)</c>).
+    /// </para>
     /// </remarks>
     /// <example>
     /// <code>

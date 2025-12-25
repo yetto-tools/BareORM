@@ -110,11 +110,10 @@
     ///     </item>
     /// </list>
     /// </remarks>
-    /// <param name="expression">
-    /// La expresión SQL que debe cumplirse. Por ejemplo: "Precio &gt; 0", "Edad &gt;>= 18 AND Edad &lt;= 120".
-    /// Esta expresión se ejecuta en la base de datos cuando se intenta insertar o actualizar un registro.
-    /// Si el resultado es false, la BD rechaza la operación.
-    /// No incluya "CHECK (" ni la palabra clave CHECK; solo la condición.
+    /// <summary>Crea un constraint CHECK.</summary>
+    /// <param>
+    /// La expresión SQL que debe cumplirse. Por ejemplo: <c>Precio &gt; 0</c>, <c>Edad &gt;= 18 AND Edad &lt;= 120</c>.
+    /// No incluya <c>CHECK (</c> ni la palabra clave <c>CHECK</c>; solo la condición.
     /// </param>
     /// <example>
     /// <code>
@@ -152,7 +151,7 @@
     /// {
     ///     public int UsuarioId { get; set; }
     ///     
-    ///     [Check("Edad >= 18 AND Edad <= 120")]
+    ///     [Check("Edad &gt;= 18 AND Edad &lt;= 120")]
     ///     public int Edad { get; set; }
     ///     
     ///     [Check("Estado IN ('Activo', 'Inactivo', 'Suspendido')")]
@@ -212,7 +211,7 @@
         /// 
         /// <strong>Ejemplos válidos:</strong>
         /// - "Precio > 0"
-        /// - "Edad >= 18 AND Edad <= 65"
+        /// - "Edad &gt;= 18 AND Edad &lt;= 65"
         /// - "Estado IN ('Activo', 'Inactivo')"
         /// - "FechaFin >= FechaInicio"
         /// - "YEAR(Fecha) >= 2020" (SQL Server)

@@ -14,8 +14,8 @@ namespace BareORM.Annotations.Attributes
     /// Reglas:
     /// </para>
     /// <list type="bullet">
-    /// <item><description><paramref name="precision"/> debe ser &gt; 0.</description></item>
-    /// <item><description><paramref name="scale"/> debe ser &gt;= 0 y no puede ser mayor que <paramref name="precision"/>.</description></item>
+    /// <item><description><see cref="PrecisionAttribute(byte, byte)"/> requiere <c>precision</c> &gt; 0.</description></item>
+    /// <item><description><see cref="PrecisionAttribute(byte, byte)"/> requiere <c>scale</c> &gt;= 0 y <c>scale</c> ≤ <c>precision</c>.</description></item>
     /// <item><description>Recomendado usarlo únicamente sobre propiedades <see cref="decimal"/> / <see cref="decimal"/>?.</description></item>
     /// </list>
     /// <para>
