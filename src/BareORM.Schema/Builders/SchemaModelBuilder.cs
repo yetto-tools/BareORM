@@ -1,19 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.Reflection;
-using System.Text;
 using BareORM.Annotations.Attributes;
 using BareORM.Schema.Utilities;
 
 namespace BareORM.Schema.Builders
 {
+    /// <summary>
+    /// SchemaModelBuilder construye un modelo de esquema a partir de tipos de entidad anotados.
+    /// </summary>
     public sealed class SchemaModelBuilder
     {
         private readonly SchemaModelBuilderOptions _opt;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="options"></param>
         public SchemaModelBuilder(SchemaModelBuilderOptions? options = null)
             => _opt = options ?? new SchemaModelBuilderOptions();
 
+        /// <summary>
+        /// Construye el modelo de esquema a partir de los tipos de entidad proporcionados.
+        /// </summary>
+        /// <param name="entityTypes"></param>
+        /// <returns></returns>
         public SchemaModel Build(params Type[] entityTypes)
         {
             var model = new SchemaModel();
@@ -42,28 +52,76 @@ namespace BareORM.Schema.Builders
         {
             foreach (var p in ReflectionHelpers.GetMappableProperties(entityType))
             {
-                var colAttr = p.GetCustomAttribute<ColumnAttribute>();
+                var colAttr = p.GetCustomAttribute<ColumnNameAttribute>();
                 var colName = colAttr?.Name ?? p.Name;
 
                 var clrType = p.PropertyType;
-                var isNullable = IsNullable(p);
+
+                // 1) Leer anotaciones de schema
+                var maxLen = p.GetCustomAttribute<ColumnMaxLengthAttribute>()?.Value;
+
+                // Fixed: soporta ColumnFixedLength o ColumnLength (alias)
+                var fixedLen =
+                    p.GetCustomAttribute<ColumnFixedLengthAttribute>()?.Value
+                    ?? p.GetCustomAttribute<ColumnLengthAttribute>()?.Value;
+
+                var prec = p.GetCustomAttribute<ColumnPrecisionAttribute>(); // ✅ schema
+
+                // Validaciones de uso correcto
+                var isString = clrType == typeof(string);
+                var isDecimal = clrType == typeof(decimal) || clrType == typeof(decimal?);
+
+                if ((maxLen.HasValue || fixedLen.HasValue) && !isString)
+                    throw new InvalidOperationException(
+                        $"[ColumnMaxLength]/[ColumnFixedLength]/[ColumnLength] only apply to string. {entityType.Name}.{p.Name} is {clrType.Name}.");
+
+                if (maxLen.HasValue && fixedLen.HasValue)
+                    throw new InvalidOperationException(
+                        $"Use either [ColumnMaxLength] OR [ColumnFixedLength]/[ColumnLength], not both: {entityType.Name}.{p.Name}.");
+
+                if (prec is not null && !isDecimal)
+                    throw new InvalidOperationException(
+                        $"[ColumnPrecision] only applies to decimal/decimal?. {entityType.Name}.{p.Name} is {clrType.Name}.");
+
+                // 2) Nullability (regla: NULL por defecto)
+                var isNullable = true;
+
+                if (p.GetCustomAttribute<ColumnNotNullAttribute>() is not null)
+                    isNullable = false;
+
+                if (p.GetCustomAttribute<PrimaryKeyAttribute>() is not null)
+                    isNullable = false;
+
+                var inc = p.GetCustomAttribute<IncrementalKeyAttribute>();
+                if (inc is not null)
+                    isNullable = false;
 
                 var colType = _opt.TypeMapper.Map(clrType);
 
-                var inc = p.GetCustomAttribute<IncrementalKeyAttribute>();
-
+                // 3) Crear columna con metadata extra
                 var col = new DbColumn(colName, clrType, colType, p.Name)
                 {
                     IsNullable = isNullable,
+
+                    // Incremental key
                     IsIncrementalKey = inc is not null,
                     SequenceName = inc?.SequenceName,
                     StartWith = inc?.StartWith,
-                    IncrementBy = inc?.IncrementBy
+                    IncrementBy = inc?.IncrementBy,
+
+                    // String size
+                    MaxLength = maxLen,
+                    FixedLength = fixedLen,
+
+                    // Decimal precision/scale
+                    Precision = prec?.Precision,
+                    Scale = prec?.Scale
                 };
 
                 table.Columns.Add(col);
             }
         }
+
 
         private void BuildConstraints(DbTable table, Type entityType, SchemaModel model)
         {
@@ -148,14 +206,7 @@ namespace BareORM.Schema.Builders
             }
         }
 
-        private static bool IsNullable(PropertyInfo p)
-        {
-            var t = p.PropertyType;
-            if (!t.IsValueType) return true;                 // ref type
-            return Nullable.GetUnderlyingType(t) is not null; // Nullable<T>
-        }
-
         private static string GetColumnName(PropertyInfo p)
-            => p.GetCustomAttribute<ColumnAttribute>()?.Name ?? p.Name;
+            => p.GetCustomAttribute<ColumnNameAttribute>()?.Name ?? p.Name;
     }
 }
