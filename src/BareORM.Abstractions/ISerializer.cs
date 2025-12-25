@@ -347,6 +347,84 @@ namespace BareORM.Abstractions
         /// </exception>
         string Serialize<T>(T value);
 
+        /// <summary>
+        /// Serializa un objeto de tipo T a una representación de texto (típicamente JSON).
+        /// </summary>
+        /// <typeparam name="T">El tipo del objeto a serializar.</typeparam>
+        /// <remarks>
+        /// Este método realiza una serialización genérica y fuertemente tipada del objeto
+        /// aplicando las opciones de configuración especificadas.
+        /// 
+        /// <strong>Proceso:</strong>
+        /// 1. Toma el objeto de tipo T
+        /// 2. Convierte su estado a una representación de texto según las opciones
+        /// 3. Retorna la representación como string
+        /// 
+        /// <strong>Consideraciones:</strong>
+        /// <list type="bullet">
+        ///     <item>
+        ///         <description>
+        ///         El objeto nunca es modificado (serialización es operación de solo lectura).
+        ///         </description>
+        ///     </item>
+        ///     <item>
+        ///         <description>
+        ///         Las propiedades públicas se serializan por defecto.
+        ///         </description>
+        ///     </item>
+        ///     <item>
+        ///         <description>
+        ///         Las propiedades privadas, métodos y campos no se serializan automáticamente
+        ///         (depende de la implementación).
+        ///         </description>
+        ///     </item>
+        ///     <item>
+        ///         <description>
+        ///         Los valores nulos se incluyen en la serialización (como null en JSON).
+        ///         </description>
+        ///     </item>
+        ///     <item>
+        ///         <description>
+        ///         Los objetos complejos anidados se serializan recursivamente.
+        ///         </description>
+        ///     </item>
+        ///     <item>
+        ///         <description>
+        ///         Las referencias circulares pueden causar StackOverflowException
+        ///         (depende de la implementación).
+        ///         </description>
+        ///     </item>
+        /// </list>
+        /// 
+        /// <strong>Tamaño de resultado:</strong>
+        /// El tamaño de la cadena serializada depende del formato y la complejidad del objeto.
+        /// Para objetos grandes, considere:
+        /// - Compresión (GZIP)
+        /// - Almacenamiento en caché
+        /// - Paginación
+        /// </remarks>
+        /// <param name="value">
+        /// El objeto a serializar. Puede ser null.
+        /// Si es null, típicamente devuelve "null" como string.
+        /// </param>
+        /// <param name="options">
+        /// Las opciones de configuración para la serialización JSON. 
+        /// Incluye configuraciones como nombrado de propiedades, tipos de codificación,
+        /// manejo de valores nulos, y comportamiento ante tipos no serializables.
+        /// Si es null, se utilizan las opciones por defecto.
+        /// <see cref="JsonSerializerOptions"/>
+        /// </param>
+        /// <returns>
+        /// Una representación de texto del objeto serializado. Nunca retorna null, pero puede retornar
+        /// la cadena "null" si el objeto de entrada es null.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// Se lanza si el objeto contiene estructuras no serializables
+        /// (ej: referencias circulares, tipos no soportados).
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Se lanza si hay problemas con los parámetros de serialización o las opciones proporcionadas.
+        /// </exception>
         string Serialize<T>(T value, JsonSerializerOptions options);
 
         /// <summary>
